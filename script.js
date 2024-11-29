@@ -31,6 +31,9 @@ function operate(operator, a, b) {
     }
   }
   function populateDisplay(value) {
+    if (value.endsWith(".0")) {
+        value = value.slice(0, -2);
+      }
     display.textContent = value;
   }
 
@@ -53,14 +56,20 @@ function operate(operator, a, b) {
     if (currentOperator === "") {
       return;
     }
-    result = operate(currentOperator, parseFloat(previousNumber), parseFloat(currentNumber));
+    result =operate(currentOperator, parseFloat(previousNumber), parseFloat(currentNumber)).toFixed(1);
+    console.log("result", result);
     currentNumber = result.toString();
     previousNumber = "";
     currentOperator = "";
     populateDisplay(result);
   }
 
-  equalsButton.addEventListener("click", calculate);
+  equalsButton.addEventListener(("click"), () => {
+    if (currentNumber === "") {
+      return;
+    }
+    calculate();
+  })
 
 function updateDisplay(input) {
     if (operatorClicked) {
@@ -75,10 +84,18 @@ function updateDisplay(input) {
 }
 operatorButton.forEach(button => {
     button.addEventListener("click", (e) => 
-        //if there's a current operator, calculate first
-        {   if (currentOperator !== "") {
+        // handle when 2 operator is clicked ? not sure how to handle it though.
+        { if (operatorClicked) {
+            currentOperator = e.target.value;
+            return ;
+        }
+                //if there's a current operator, calculate first
+
+
+            if (currentOperator !== "") {
             calculate();
         }
+            console.log("currentNumber, previousNumber, currentOperator", currentNumber, previousNumber, currentOperator);  
             currentOperator = e.target.value;
             operatorClicked = true;
             previousNumber = currentNumber; // store the previous number
@@ -89,7 +106,7 @@ operatorButton.forEach(button => {
   numberButton.forEach(button => {
     button.addEventListener("click", (e) => 
         { if (result !== 0) {
-            clearAll();
+            clearEntry();
         }
             let input=e.target.value;
             updateDisplay(input);
