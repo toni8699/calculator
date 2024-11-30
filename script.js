@@ -96,8 +96,11 @@ operatorButton.forEach(button => {
             return ;
         }
                 //if there's a current operator, calculate first
+
+
             if (currentOperator !== "") {
             calculate();
+        }
             console.log("currentNumber, previousNumber, currentOperator", currentNumber, previousNumber, currentOperator);  
             currentOperator = e.target.value;
             operatorClicked = true;
