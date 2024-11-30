@@ -68,13 +68,16 @@ function operate(operator, a, b) {
     previousNumber = "";
     currentOperator = "";
     populateDisplay(result);
+    
   }
+  let equalpressed = false;
 
   equalsButton.addEventListener(("click"), () => {
     if (currentNumber === "") {
       return;
     }
     calculate();
+    equalpressed = true;
   })
 
 function updateDisplay(input) {
@@ -101,7 +104,6 @@ operatorButton.forEach(button => {
             if (currentOperator !== "") {
             calculate();
         }
-            console.log("currentNumber, previousNumber, currentOperator", currentNumber, previousNumber, currentOperator);  
             currentOperator = e.target.value;
             operatorClicked = true;
             previousNumber = currentNumber; // store the previous number
@@ -111,8 +113,10 @@ operatorButton.forEach(button => {
 
   numberButton.forEach(button => {
     button.addEventListener(["click"], (e) => 
-        { if (result !== 0) {
-            clearEntry();
+        { if (equalpressed && !operatorClicked) {
+            clearAll();
+            equalpressed = false;
+            
         }
             let input=e.target.value;
             updateDisplay(input);
@@ -133,52 +137,52 @@ dotButton.addEventListener("click", () => {
     console.log('with dot',currentNumber);
     populateDisplay(currentNumber);
 });
-window.addEventListener('keydown', function(e){
-    let key = e.key;
-    console.log(key);
-    if (key >= 0 && key <= 9) {
-        updateDisplay(key);
-    }else{
-        switch(key){
-            case "Enter":
-                equalsButton.click();
-                break;
-            case "Escape":
-                clearAllButton.click();
-                break;
-            case "Backspace":
-                clearEntryButton.click();
-                break;
-           case "+":
-                currentOperator = "+";
-                operatorClicked = true;
-                previousNumber = currentNumber; // store the previous number
-                currentNumber = ""; //reset the current number
-                break;
-            case "-":
-                currentOperator = "-";
-                operatorClicked = true;
-                previousNumber = currentNumber; // store the previous number
-                currentNumber = ""; //reset the current number
-                break;
-            case "*":
-                currentOperator = "*";
-                operatorClicked = true;
-                previousNumber = currentNumber; // store the previous number
-                currentNumber = ""; //reset the current number
-                break;
-            case "/":
-                currentOperator = "/";
-                operatorClicked = true;
-                previousNumber = currentNumber; // store the previous number
-                currentNumber = ""; //reset the current number
-                break;
-            case ".":
-                currentNumber += ".";
-                break;
-        }
-    }
-});
+// window.addEventListener('keydown', function(e){
+//     let key = e.key;
+//     console.log(key);
+//     if (key >= 0 && key <= 9) {
+//         updateDisplay(key);
+//     }else{
+//         switch(key){
+//             case "Enter":
+//                 equalsButton.click();
+//                 break;
+//             case "Escape":
+//                 clearAllButton.click();
+//                 break;
+//             case "Backspace":
+//                 clearEntryButton.click();
+//                 break;
+//            case "+":
+//                 currentOperator = "+";
+//                 operatorClicked = true;
+//                 previousNumber = currentNumber; // store the previous number
+//                 currentNumber = ""; //reset the current number
+//                 break;
+//             case "-":
+//                 currentOperator = "-";
+//                 operatorClicked = true;
+//                 previousNumber = currentNumber; // store the previous number
+//                 currentNumber = ""; //reset the current number
+//                 break;
+//             case "*":
+//                 currentOperator = "*";
+//                 operatorClicked = true;
+//                 previousNumber = currentNumber; // store the previous number
+//                 currentNumber = ""; //reset the current number
+//                 break;
+//             case "/":
+//                 currentOperator = "/";
+//                 operatorClicked = true;
+//                 previousNumber = currentNumber; // store the previous number
+//                 currentNumber = ""; //reset the current number
+//                 break;
+//             case ".":
+//                 currentNumber += ".";
+//                 break;
+//         }
+//     }
+// });
 
 
 
