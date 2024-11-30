@@ -32,8 +32,8 @@ function operate(operator, a, b) {
   }
   function populateDisplay(value) {
     if (value.endsWith(".0")) {
-        value = value.slice(0, -2);
-      }
+      value = value.slice(0, -2);
+    }
     display.textContent = value;
   }
 
@@ -56,8 +56,14 @@ function operate(operator, a, b) {
     if (currentOperator === "") {
       return;
     }
-    result =operate(currentOperator, parseFloat(previousNumber), parseFloat(currentNumber)).toFixed(1);
+    
     console.log("result", result);
+    if (currentNumber==="0" && currentOperator === "/") {
+        result ="Error";
+    }else{
+        result =operate(currentOperator, parseFloat(previousNumber), parseFloat(currentNumber)).toFixed(1);
+
+    }
     currentNumber = result.toString();
     previousNumber = "";
     currentOperator = "";
@@ -90,11 +96,8 @@ operatorButton.forEach(button => {
             return ;
         }
                 //if there's a current operator, calculate first
-
-
             if (currentOperator !== "") {
             calculate();
-        }
             console.log("currentNumber, previousNumber, currentOperator", currentNumber, previousNumber, currentOperator);  
             currentOperator = e.target.value;
             operatorClicked = true;
@@ -104,7 +107,7 @@ operatorButton.forEach(button => {
 })
 
   numberButton.forEach(button => {
-    button.addEventListener("click", (e) => 
+    button.addEventListener(["click"], (e) => 
         { if (result !== 0) {
             clearEntry();
         }
@@ -112,19 +115,68 @@ operatorButton.forEach(button => {
             updateDisplay(input);
         })
   });
-percentButton.addEventListener("click", () => {
-    currentNumber = (currentNumber / 100).toString();
-    populateDisplay(currentNumber);
-})
+  
 signButton.addEventListener("click", () => {
     currentNumber = (-currentNumber).toString();
     populateDisplay(currentNumber);
 })
+
 dotButton.addEventListener("click", () => {
     if (currentNumber.includes(".")) {
         return;
     }
+    console.log('currentNumber:',currentNumber);
     currentNumber += ".";
+    console.log('with dot',currentNumber);
     populateDisplay(currentNumber);
-})
+});
+window.addEventListener('keydown', function(e){
+    let key = e.key;
+    console.log(key);
+    if (key >= 0 && key <= 9) {
+        updateDisplay(key);
+    }else{
+        switch(key){
+            case "Enter":
+                equalsButton.click();
+                break;
+            case "Escape":
+                clearAllButton.click();
+                break;
+            case "Backspace":
+                clearEntryButton.click();
+                break;
+           case "+":
+                currentOperator = "+";
+                operatorClicked = true;
+                previousNumber = currentNumber; // store the previous number
+                currentNumber = ""; //reset the current number
+                break;
+            case "-":
+                currentOperator = "-";
+                operatorClicked = true;
+                previousNumber = currentNumber; // store the previous number
+                currentNumber = ""; //reset the current number
+                break;
+            case "*":
+                currentOperator = "*";
+                operatorClicked = true;
+                previousNumber = currentNumber; // store the previous number
+                currentNumber = ""; //reset the current number
+                break;
+            case "/":
+                currentOperator = "/";
+                operatorClicked = true;
+                previousNumber = currentNumber; // store the previous number
+                currentNumber = ""; //reset the current number
+                break;
+            case ".":
+                currentNumber += ".";
+                break;
+        }
+    }
+});
+
+
+
 
